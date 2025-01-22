@@ -86,32 +86,38 @@ sudo mkdir -p /var/www/laravel/bootstrap/cache
 2. **Add the Following Configuration:**
 
    ```nginx
-   server {
-       listen 80;
-       server_name your_server_ip_or_domain;
+    server {
+    listen 80;
 
-       root /var/www/laravel/public;
-       index index.php index.html index.htm;
+    root /var/www/laravel-project/public;
+    index index.html index.php;
 
-       location / {
-           try_files $uri $uri/ /index.php?$query_string;
-       }
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
 
-       location ~ \.php$ {
-           include snippets/fastcgi-php.conf;
-           fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
-           fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-           include fastcgi_params;
-       }
+    location ~ ^/index.php {
+        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;  # Ensure this matches your PHP version
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
 
-       location ~ /\.ht {
-           deny all;
-       }
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;  # Ensure this matches your PHP version
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
 
-       error_log /var/log/nginx/laravel_error.log;
-       access_log /var/log/nginx/laravel_access.log;
-   }
-   ```
+    location ~ /\.ht {
+        deny all;
+    }
+
+    error_log /var/log/nginx/laravel_error.log;
+    access_log /var/log/nginx/laravel_access.log;
+}   ```
 
 3. **Enable the Configuration:**
 
