@@ -41,15 +41,15 @@ sudo apt install nginx mysql-server php-fpm php-cli php-mysql php-mbstring php-x
 ## **Download and Extract the Project**
 
 1. **Download the Project ZIP:**
-   If you haven’t already, download the Laravel project zip file and move it to your web server's root directory.
-
+    ```
+    sudo git clone https://github.com/ritikops/Php-Laravel-setup.git
+    ```
 2. **Extract the Project:**
 
    ```bash
-   sudo mv my-laravel-project.zip /var/www/
+   sudo mv Php-Laravel-setup /var/www/
    cd /var/www/
-   sudo unzip my-laravel-project.zip
-   sudo mv my-laravel-project laravel
+   sudo mv Php-Laravel-setup laravel
    ```
 
 ---
@@ -146,15 +146,12 @@ sudo mkdir -p /var/www/laravel/bootstrap/cache
    Then install the necessary dependencies using Composer:
 
    ```bash
-   composer install
-   ```
+   php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    php -r "if (hash_file('sha384', 'composer-setup.php') === 'dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+    php composer-setup.php
+    php -r "unlink('composer-setup.php');"
+    sudo mv composer.phar /usr/local/bin/composer
 
-2. **Generate the Application Key:**
-
-   Laravel requires an application key for encryption. Generate it using the following command:
-
-   ```bash
-   php artisan key:generate
    ```
 
 ---
@@ -196,13 +193,6 @@ If your project requires a MySQL database, follow these steps:
    DB_PASSWORD=password
    ```
 
-3. **Run Migrations:**
-
-   If you have any database migrations, run them using:
-
-   ```bash
-   php artisan migrate
-   ```
 
 ---
 
